@@ -14,10 +14,10 @@ def df(x):
 def newton_raphson(x0, tol=1e-6, max_iter=100):
     x_values = [x0]
     for _ in range(max_iter):
-        x1 = x0 - f(x0) / df(x0)
-        x_values.append(x1)
         if abs(f(x0)) < tol:
             break
+        x1 = x0 - f(x0) / df(x0)
+        x_values.append(x1)
         x0 = x1
     return x_values
 
@@ -90,3 +90,32 @@ print(df_A2.to_string(index=False))
 
 A3 = [len(A1) - 1, len(A2)]
 print("Number of iterations for Newton-Raphson and Bisection:", A3)
+
+A = np.array([[1,2], [-1,1]])
+B = np.array([[2,0],[0,2]])
+C = np.array([[2,0,-3],[0,0,-1]])
+D = np.array([[1,2],[2,3],[-1,0]])
+x = np.array([1,0])
+y = np.array([0,1])
+z = np.array([1,2,-1])
+A4 = np.add(A,B)
+A5 = np.add(3*x,-4*y)
+A6 = np.dot(A,x)
+A7 = np.dot(B,np.add(x,-y))
+A8 = np.dot(D,x)
+A9 = np.add(np.dot(D,y),z)
+A10 = np.dot(A,B)
+A11 = np.dot(B,C)
+A12 = np.dot(C,D)
+
+"""
+print("\nA4:", A4)
+print("A5:", A5)
+print("A6:", A6)
+print("A7:", A7)
+print("A8:", A8)
+print("A9:", A9)
+print("A10:", A10)
+print("A11:", A11)
+print("A12:", A12)
+"""
