@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
+#import pandas as pd
 
 
 # Define the function and its derivative
@@ -14,10 +14,10 @@ def df(x):
 def newton_raphson(x0, tol=1e-6, max_iter=100):
     x_values = [x0]
     for _ in range(max_iter):
-        if abs(f(x0)) < tol:
-            break
         x1 = x0 - f(x0) / df(x0)
         x_values.append(x1)
+        if abs(f(x0)) < tol:
+            break
         x0 = x1
     return x_values
 
@@ -76,7 +76,7 @@ plt.legend()
 plt.grid(True)
 plt.show()
 """
-
+"""
 # Create dataframes for A1 and A2
 df_A1 = pd.DataFrame({'Iteration': range(1, len(A1) + 1), 'x-values': A1})
 df_A2 = pd.DataFrame({'Iteration': range(1, len(A2) + 1), 'Mid-point values': A2})
@@ -87,7 +87,7 @@ print(df_A1.to_string(index=False))
 
 print("\nBisection Method (A2):")
 print(df_A2.to_string(index=False))
-
+"""
 A3 = [len(A1) - 1, len(A2)]
 print("Number of iterations for Newton-Raphson and Bisection:", A3)
 
