@@ -18,7 +18,7 @@ xp = [-L, L]
 xspan = np.linspace(-L, L, int((2 * L) / 0.1) + 1)
 x0 = [A, A] #initial condition needs to be changed
 
-for modes in range(1, 5):  # begin mode loop
+for modes in range(1, 5):  # begin mode loop 
     eps = eps_start  # initial value of eigenvalue beta
     deps = eps_start / 100  # default step size in beta
     for _ in range(1000):  # begin convergence loop for beta
