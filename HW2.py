@@ -16,21 +16,22 @@ K = 1
 L = 4
 xp = [-L, L] 
 xspan = np.linspace(-L, L, int((2 * L) / 0.1) + 1)
-x0 = [A, A*np.sqrt(K*L**2)] #initial conditions
+#x0 = [A, A*np.sqrt(K*L**2)] #initial conditions
 for modes in range(1, 6):  # begin mode loop
     eps = eps_start  # initial value of eigenvalue beta
     deps = eps_start / 100  # default step size in beta
     for _ in range(1000):  # begin convergence loop for beta
+        x0 = [A, A*np.sqrt(K*L**2-eps)] #initial conditions
         y = odeint(shoot2, x0, xspan, args=(K,eps)) 
         # y = RK45(shoot2, xp[0], x0, xp[1], args=(n0,beta)) 
 
-        if abs(y[-1, 1] + np.sqrt(K*L**2)*y[-1,0]) < tol:  # final condition
+        if abs(y[-1, 1] + np.sqrt(K*L**2-eps)*y[-1,0]) < tol:  # final condition
             #print(eps)  # write out eigenvalue 
             eps_list.append(eps)
-            print(_)
+            #print(_)
             break  # get out of convergence loop
 
-        if (-1) ** (modes + 1) * (y[-1, 1] + np.sqrt(K*L**2)*y[-1,0]) > 0:
+        if (-1) ** (modes + 1) * (y[-1, 1] + np.sqrt(K*L**2-eps)*y[-1,0]) > 0:
             eps += deps
         else:
             eps -= deps / 2
