@@ -27,6 +27,7 @@ for modes in range(1, 6):  # begin mode loop
         if abs(y[-1, 1] + np.sqrt(K*L**2)*y[-1,0]) < tol:  # final condition
             #print(eps)  # write out eigenvalue 
             eps_list.append(eps)
+            print(_)
             break  # get out of convergence loop
 
         if (-1) ** (modes + 1) * (y[-1, 1] + np.sqrt(K*L**2)*y[-1,0]) > 0:
@@ -35,7 +36,7 @@ for modes in range(1, 6):  # begin mode loop
             eps -= deps / 2
             deps /= 2
 
-    eps_start = eps + 0.1  # after finding eigenvalue, pick new start
+    eps_start = eps + 0.01  # after finding eigenvalue, pick new start
     norm = np.trapz(y[:, 0] * y[:, 0], xspan)  # calculate the normalization
     plt.plot(xspan, y[:, 0] / np.sqrt(norm), col[modes - 1])  # plot modes
     eig_func_list.append(abs(y[:, 0] / np.sqrt(norm)))
