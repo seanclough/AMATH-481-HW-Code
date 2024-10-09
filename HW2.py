@@ -13,20 +13,22 @@ eps_list = []
 eig_func_list = []
 A = 1
 K = 1 
-x0 = [0, A] #initial condition needs to be changed
 L = 4
 xp = [-L, L] 
 xspan = np.linspace(-L, L, int((2 * L) / 0.1) + 1)
+x0 = [A, A] #initial condition needs to be changed
 
 for modes in range(1, 5):  # begin mode loop
     eps = eps_start  # initial value of eigenvalue beta
     deps = eps_start / 100  # default step size in beta
     for _ in range(1000):  # begin convergence loop for beta
         y = odeint(shoot2, x0, xspan, args=(K,eps)) 
-       # y = RK45(shoot2, xp[0], x0, xp[1], args=(n0,beta)) 
+        # y = RK45(shoot2, xp[0], x0, xp[1], args=(n0,beta)) 
 
-        if abs(y[-1, 0] - 0) < tol:  # final condition EDIT THIS
-            print(eps)  # write out eigenvalue
+        #print('y[-1, 1]= ' + str(y[-1, 1]))
+        #print('y[-1, 0]= '+ str(y[-1, 0]))
+        if abs(y[-1, 1] + y[-1,0]) < tol:  # final condition EDIT THIS
+            print(eps)  # write out eigenvalue 
             eps_list.append(eps)
             break  # get out of convergence loop
 
