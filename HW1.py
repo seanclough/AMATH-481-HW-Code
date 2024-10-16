@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-#import pandas as pd
+import pandas as pd
 
 
 # Define the function and its derivative
@@ -76,7 +76,7 @@ plt.legend()
 plt.grid(True)
 plt.show()
 """
-"""
+#"""
 # Create dataframes for A1 and A2
 df_A1 = pd.DataFrame({'Iteration': range(1, len(A1) + 1), 'x-values': A1})
 df_A2 = pd.DataFrame({'Iteration': range(1, len(A2) + 1), 'Mid-point values': A2})
@@ -87,7 +87,7 @@ print(df_A1.to_string(index=False))
 
 print("\nBisection Method (A2):")
 print(df_A2.to_string(index=False))
-"""
+#"""
 A3 = [len(A1) - 1, len(A2)]
 print("Number of iterations for Newton-Raphson and Bisection:", A3)
 

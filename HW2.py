@@ -17,6 +17,7 @@ L = 4
 xp = [-L, L] 
 xspan = np.linspace(-L, L, int((2 * L) / 0.1) + 1)
 #x0 = [A, A*np.sqrt(K*L**2)] #initial conditions
+plt.figure(1)
 for modes in range(1, 6):  # begin mode loop
     eps = eps_start  # initial value of eigenvalue beta
     deps = eps_start / 100  # default step size in beta
@@ -40,12 +41,14 @@ for modes in range(1, 6):  # begin mode loop
     eps_start = eps + 0.01  # after finding eigenvalue, pick new start
     norm = np.trapz(y[:, 0] * y[:, 0], xspan)  # calculate the normalization
     #plt.figure(modes)
-    #plt.plot(xspan, y[:, 0] / np.sqrt(norm), col[modes - 1])  # plot modes
+    plt.plot(xspan, y[:, 0] / np.sqrt(norm), col[modes - 1])  # plot modes
     eig_func_list.append(abs(y[:, 0] / np.sqrt(norm)))
 
 plt.show()
 A1 = eig_func_list
 A2 = eps_list
+
+"""
 other_A1 = np.array([[0.0002560239, 0.0014526119, 0.0056578387, 0.0174247034, 0.0449716541],
                    [0.0003767047, 0.0020809, 0.0078740636, 0.0234942195, 0.0585268011],
                    [0.000551333, 0.0029647739, 0.0108973736, 0.0314957085, 0.0757119111],
@@ -127,7 +130,6 @@ other_A1 = np.array([[0.0002560239, 0.0014526119, 0.0056578387, 0.0174247034, 0.
                    [0.000551333, 0.0029647739, 0.0108973736, 0.0314957085, 0.0757119111],
                    [0.0003767047, 0.0020809, 0.0078740636, 0.0234942195, 0.0585268011],
                    [0.0002560239, 0.0014526119, 0.0056578387, 0.0174247034, 0.0449716541]]) 
-
 error = A1-np.transpose(other_A1)
 y_min = -0.0007
 y_max = 0.0007
@@ -139,6 +141,7 @@ for i in range(6,11):
     axs[i-6].set_yticks(y_ticks)
     axs[i-6].set_title(f'Plot {i-6+1}')  # Optionally set a title for each subplot
 plt.subplots_adjust(hspace=0.5) 
-plt.show()    
+plt.show()
+"""    
 #print(error)
 print('A2 = ' + str(A2))
