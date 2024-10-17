@@ -45,7 +45,7 @@ for modes in range(1, 6):  # begin mode loop
     eig_func_list.append(abs(y[:, 0] / np.sqrt(norm)))
 
 plt.show()
-A1 = eig_func_list
+A1 = np.transpose(eig_func_list)
 A2 = eps_list
 
 """
