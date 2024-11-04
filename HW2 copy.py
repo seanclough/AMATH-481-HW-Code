@@ -21,39 +21,48 @@ xp = [-L, L]
 xspan = np.arange(-L,L+.1,.1)
 #x0 = [A, A*np.sqrt(K*L**2)] #initial conditions
 plt.figure(1)
-for modes in range(1, 3):  # begin mode loop
+for modes in range(1, 3):           # begin mode loop
     A = A_start
     dA = .01
-    for __ in range(10): # loops A here
-        eps = eps_start  # initial value of eigenvalue beta
-        deps = eps_start / 100 # default step size in beta
-        for _ in range(1000):  # begin convergence loop for beta
-            x0 = [A, A*np.sqrt(K*L**2-eps)] #initial conditions
-            sol = solve_ivp(shoot2, [xspan[0], xspan[-1]], x0, t_eval=xspan, args=(K,eps,gamma))
-            y1 = sol.y[0]
-            y2 = sol.y[1]
-            #y = odeint(shoot2, x0, xspan, args=(K,eps,gamma)) 
+    eps = eps_start                 # initial value of eigenvalue beta
+    deps = eps_start / 100          # default step size in beta
+    for __ in range(10):            # loops A here
+
+        # notice: put (d)eps above in order to make sure
+        # in each mode's loop, we use the same initial
+
+        for _ in range(1000):       # begin convergence loop for beta
+            x0 = [A, A * np.sqrt(K * L ** 2 - eps)]                         #initial conditions
+            sol = solve_ivp(shoot2, [xspan[0], xspan[-1]], x0, t_eval=xspan, args=(K, eps, gamma))
+            y1 = sol.y[0]  
+            y2 = sol.y[1]   
+            # y = odeint(shoot2, x0, xspan, args=(K,eps,gamma)) 
             # y = RK45(shoot2, xp[0], x0, xp[1], args=(n0,beta)) 
 
-            if abs(y2[-1] + np.sqrt(K*L**2-eps)*y1[-1]) < tol:  # final condition
+            if abs(y2[-1] + np.sqrt(K * L ** 2 - eps) * y1[-1]) < tol:      # final condition
                 #print(eps)  # write out eigenvalue 
                 #eps_list.append(eps)
-                print(_)
+                #print(_)
                 break  # get out of convergence loop
 
-            if (-1) ** (modes + 1) * (y2[-1] + np.sqrt(K*L**2-eps)*y1[-1]) > 0:
+            if (-1) ** (modes + 1) * (y2[-1] + np.sqrt(K * L ** 2 - eps) * y1[-1]) > 0:
                 eps += deps
             else:
                 eps -= deps / 2
                 deps /= 2
-        norm = np.trapz(y1**2, xspan)  # calculate the normalization
-        print(norm)
-        print(A)
-        #A += dA
+
+            if _ == 999:
+                print('Did not converge')
+
+        norm = np.trapz(y1 ** 2, xspan)  # calculate the normalization
+        # print("norm = " + str(norm))
+        # print("A = " + str(A))
+        # A += dA
         if abs(norm - 1) < tol:
             break
         else:
-            A /= np.sqrt(norm)
+            A /= np.sqrt(norm)   
+        
         """
         elif norm - 1 < 0:
             A += dA
@@ -63,13 +72,16 @@ for modes in range(1, 3):  # begin mode loop
         if A < 0:
             A = 0
         """
+        # A = 0.34084384378121857
+
     #print(norm)
     eps_start = eps + 0.01  # after finding eigenvalue, pick new start
     A_start = A + 0.01
-    #plt.figure(modes)
-    plt.plot(xspan, y1 / np.sqrt(norm), col[modes - 1])  # plot modes
+
+    # 存储并绘制结果
     eps_list.append(eps)
     eig_func_list.append(abs(y1 / np.sqrt(norm)))
+    plt.plot(xspan, abs(y1 / np.sqrt(norm)), col[modes - 1], label=f"Mode {modes}") # plot modes
 
 plt.show()
 #A1 = np.transpose(eig_func_list)
