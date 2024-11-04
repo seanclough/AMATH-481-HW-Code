@@ -48,6 +48,12 @@ plt.show()
 A1 = np.transpose(eig_func_list)
 A2 = eps_list
 
+from scipy.signal import find_peaks
+for n in range(5):
+    peaks, _ = find_peaks(eig_func_list[n])
+    for __ in range(len(peaks)):
+        print('mode ' + str(n) + ' peaks = ' + str(eig_func_list[n][peaks[__]]))
+
 """
 other_A1 = np.array([[0.0002560239, 0.0014526119, 0.0056578387, 0.0174247034, 0.0449716541],
                    [0.0003767047, 0.0020809, 0.0078740636, 0.0234942195, 0.0585268011],
