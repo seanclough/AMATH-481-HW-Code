@@ -16,14 +16,14 @@ xspan = np.linspace(-L, L, int((2 * L) / xstep) + 1)
 e1 = np.ones(len(xspan))
 diagonals = [e1, -2 * e1, e1]
 offsets = [-1, 0, 1]
-A = diags(diagonals, offsets, shape = (len(xspan), len(xspan)), format = 'csr')
+A = diags(diagonals, offsets, shape = (len(xspan)-2, len(xspan)-2), format = 'csr')
 A[0,0] = -2/3
 A[-1,-1] = -2/3
 A[0,1] = 2/3
 A[-1,-2] = 2/3
 A /= (xstep)**2
 
-B = diags([xspan**2], [0], shape = (len(xspan), len(xspan)), format = 'csr')
+B = diags([xspan[1:-1]**2], [0], shape = (len(xspan)-2, len(xspan)-2), format = 'csr')
 
 """
 # Print the matrices
@@ -31,6 +31,10 @@ print("Matrix A:")
 print(A.toarray())
 print("Matrix B:")
 print(B.toarray())
+
+# Print the size of the matrices
+print("Size of matrix A:", A.shape)
+print("Size of matrix B:", B.shape)
 """
 
 print(len(xspan))
@@ -55,8 +59,21 @@ idx = eigenvalues.argsort()
 eigenvalues = eigenvalues[idx]
 eigenvectors = eigenvectors[:, idx]
 
+# Append a value at the front of each eigenvector
+eigenvectors_with_value = np.zeros((eigenvectors.shape[0] + 2, eigenvectors.shape[1]))
+eigenvectors_with_value[1:-1, :] = eigenvectors
 for n in range(num_eigenvalues):
-    eigenvectors[:, n] /= np.trapz(eigenvectors[:, n]**2, xspan)
+    value_to_front = 4/3*eigenvectors[0, n] - 1/3*eigenvectors[1, n]
+    value_to_end = 4/3*eigenvectors[-1, n] - 1/3*eigenvectors[-2, n]
+    eigenvectors_with_value[0, n] = value_to_front
+    eigenvectors_with_value[-1, n] = value_to_end
+    if eigenvectors[1,n]-eigenvectors[0,n] < 0:
+        eigenvectors_with_value[:, n] *= -1
+eigenvectors = eigenvectors_with_value
+
+for n in range(num_eigenvalues):
+    eigenvectors[:, n] /= np.sqrt(np.trapz(eigenvectors[:, n]**2, xspan))
+    print ('norm = ' + str(np.trapz(eigenvectors[:, n]**2, xspan)))
 
 # Print the eigenvalues
 print("Eigenvalues:")
