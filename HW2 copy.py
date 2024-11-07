@@ -9,13 +9,13 @@ def shoot2(x, y, K, epsilon,gamma):
 
 tol = 1e-4  # define a tolerance level 
 col = ['r', 'b', 'g', 'c', 'm']  # eigenfunc colors
-eps_start = 0.1
+eps_start = 0.01
 eps_list = [] 
 eig_func_list = []
 A_start = 0.1
 K = 1 
 L = 2
-gamma = 0.05
+gamma = -0.05
 xp = [-L, L] 
 #xspan = np.linspace(-L, L, int((2 * L) / 0.1) + 1)
 xspan = np.arange(-L,L+.1,.1)
@@ -25,12 +25,12 @@ for modes in range(1, 3):           # begin mode loop
     A = A_start
     dA = .01
     eps = eps_start                 # initial value of eigenvalue beta
-    deps = eps_start / 100          # default step size in beta
+              # default step size in beta
     for __ in range(100):            # loops A here
 
         # notice: put (d)eps above in order to make sure
         # in each mode's loop, we use the same initial
-
+        deps = 0.1
         for _ in range(1000):       # begin convergence loop for beta
             x0 = [A, A * np.sqrt(K * L ** 2 - eps)]                         #initial conditions
             sol = solve_ivp(shoot2, [xspan[0], xspan[-1]], x0, t_eval=xspan, args=(K, eps, gamma))
@@ -50,10 +50,14 @@ for modes in range(1, 3):           # begin mode loop
             else:
                 eps -= deps
                 deps /= 2
-                print(deps)
+                #print(deps)
+                #print(eps)
 
-            if _ == 999:
+            if _ == 999 or deps < 1e-20:
                 print('Did not converge')
+                print(__)
+                print('deps = ' + str(deps))
+                break
 
         norm = np.trapz(y1 ** 2, xspan)  # calculate the normalization
         # print("norm = " + str(norm))
@@ -167,7 +171,7 @@ A7 = np.transpose(eig_func_list)
 A8 = eps_list
 """
 #"""
-other_A1 = np.genfromtxt('AMATH 481\AMATH-481-HW-Code\A5.csv', delimiter=',')
+other_A1 = np.genfromtxt('AMATH 481\AMATH-481-HW-Code\A7.csv', delimiter=',')
 error = A5-other_A1
 y_min = -0.0007
 y_max = 0.0007
