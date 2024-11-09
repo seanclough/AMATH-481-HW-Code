@@ -54,7 +54,7 @@ for n in range(5):
     for __ in range(len(peaks)):
         print('mode ' + str(n) + ' peaks = ' + str(eig_func_list[n][peaks[__]]))
 
-#"""
+"""
 other_A1 = np.array([[0.0002560239, 0.0014526119, 0.0056578387, 0.0174247034, 0.0449716541],
                    [0.0003767047, 0.0020809, 0.0078740636, 0.0234942195, 0.0585268011],
                    [0.000551333, 0.0029647739, 0.0108973736, 0.0314957085, 0.0757119111],
@@ -136,18 +136,18 @@ other_A1 = np.array([[0.0002560239, 0.0014526119, 0.0056578387, 0.0174247034, 0.
                    [0.000551333, 0.0029647739, 0.0108973736, 0.0314957085, 0.0757119111],
                    [0.0003767047, 0.0020809, 0.0078740636, 0.0234942195, 0.0585268011],
                    [0.0002560239, 0.0014526119, 0.0056578387, 0.0174247034, 0.0449716541]]) 
-error = A1-np.transpose(other_A1)
+error = A1-other_A1
 y_min = -0.0007
 y_max = 0.0007
 y_ticks = np.linspace(y_min, y_max, 3)
 fig, axs = plt.subplots(5, 1, figsize=(10, 15))
 for i in range(6,11):
-    axs[i-6].plot(xspan, error[i-6])
+    axs[i-6].plot(xspan, error[:,i-6])
     axs[i-6].set_ylim(y_min, y_max)  # Set the same y-axis limits for each subplot
     axs[i-6].set_yticks(y_ticks)
     axs[i-6].set_title(f'Plot {i-6+1}')  # Optionally set a title for each subplot
 plt.subplots_adjust(hspace=0.5) 
 plt.show()
-#"""    
+"""    
 #print(error)
-print('A2 = ' + str(A2))
+#print('A2 = ' + str(A2))

@@ -4,7 +4,7 @@ from scipy.integrate import solve_ivp
 from scipy.integrate import RK45
 import matplotlib.pyplot as plt
 
-def shoot2(x, y, K, epsilon,gamma):
+def shoot2_1(x, y, K, epsilon,gamma):
     return [y[1], (gamma*(abs(y[0]))**2+K*x**2-epsilon) * y[0]]
 
 tol = 1e-4  # define a tolerance level 
@@ -20,7 +20,7 @@ xp = [-L, L]
 #xspan = np.linspace(-L, L, int((2 * L) / 0.1) + 1)
 xspan = np.arange(-L,L+.1,.1)
 #x0 = [A, A*np.sqrt(K*L**2)] #initial conditions
-plt.figure(1)
+#plt.figure(1)
 for modes in range(1, 3):           # begin mode loop
     A = A_start
     dA = .01
@@ -33,7 +33,7 @@ for modes in range(1, 3):           # begin mode loop
         deps = 0.1
         for _ in range(1000):       # begin convergence loop for beta
             x0 = [A, A * np.sqrt(K * L ** 2 - eps)]                         #initial conditions
-            sol = solve_ivp(shoot2, [xspan[0], xspan[-1]], x0, t_eval=xspan, args=(K, eps, gamma))
+            sol = solve_ivp(shoot2_1, [xspan[0], xspan[-1]], x0, t_eval=xspan, args=(K, eps, gamma))
             y1 = sol.y[0]  
             y2 = sol.y[1]   
             # y = odeint(shoot2, x0, xspan, args=(K,eps,gamma)) 
@@ -85,9 +85,9 @@ for modes in range(1, 3):           # begin mode loop
     # 存储并绘制结果
     eps_list.append(eps)
     eig_func_list.append(abs(y1 / np.sqrt(norm)))
-    plt.plot(xspan, abs(y1 / np.sqrt(norm)), col[modes - 1], label=f"Mode {modes}") # plot modes
+    #plt.plot(xspan, abs(y1 / np.sqrt(norm)), col[modes - 1], label=f"Mode {modes}") # plot modes
 
-plt.show()
+#plt.show()
 A5 = np.transpose(eig_func_list)
 A6 = eps_list
 
@@ -104,7 +104,7 @@ xp = [-L, L]
 #xspan = np.linspace(-L, L, int((2 * L) / 0.1) + 1)
 xspan = np.arange(-L,L+.1,.1)
 #x0 = [A, A*np.sqrt(K*L**2)] #initial conditions
-plt.figure(2)
+#plt.figure(2)
 for modes in range(1, 3):           # begin mode loop
     A = A_start
     dA = .01
@@ -117,7 +117,7 @@ for modes in range(1, 3):           # begin mode loop
         deps = 0.1
         for _ in range(1000):       # begin convergence loop for beta
             x0 = [A, A * np.sqrt(K * L ** 2 - eps)]                         #initial conditions
-            sol = solve_ivp(shoot2, [xspan[0], xspan[-1]], x0, t_eval=xspan, args=(K, eps, gamma))
+            sol = solve_ivp(shoot2_1, [xspan[0], xspan[-1]], x0, t_eval=xspan, args=(K, eps, gamma))
             y1 = sol.y[0]  
             y2 = sol.y[1]   
             # y = odeint(shoot2, x0, xspan, args=(K,eps,gamma)) 
@@ -169,13 +169,13 @@ for modes in range(1, 3):           # begin mode loop
     # 存储并绘制结果
     eps_list.append(eps)
     eig_func_list.append(abs(y1 / np.sqrt(norm)))
-    plt.plot(xspan, abs(y1 / np.sqrt(norm)), col[modes - 1], label=f"Mode {modes}") # plot modes
+    #plt.plot(xspan, abs(y1 / np.sqrt(norm)), col[modes - 1], label=f"Mode {modes}") # plot modes
 
-plt.show()
+#plt.show()
 A7 = np.transpose(eig_func_list)
 A8 = eps_list
 
-#"""
+"""
 other_A1 = np.genfromtxt('AMATH 481\AMATH-481-HW-Code\A5.csv', delimiter=',')
 error = A5-other_A1
 y_min = -0.0007
@@ -202,7 +202,7 @@ for i in range(6,8):
     axs[i-6].set_title(f'Plot {i-6+1}')  # Optionally set a title for each subplot
 plt.subplots_adjust(hspace=0.5) 
 plt.show()
-#"""    
+"""    
 
 #print(error)
-print('A6 = ' + str(A6))
+#print('A6 = ' + str(A6))
