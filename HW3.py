@@ -342,14 +342,12 @@ for method in methods:
         #print(f"Method: {method}, Tolerance: {tol}, Step Size: {step_size}")
         results[TOL.index(tol), methods.index(method)] = step_size
 
-
-
 # Plot the results
-plt.figure()
+#plt.figure()
 slopes = np.zeros(len(methods))
 for i, method in enumerate(methods):
     #plt.plot(TOL, results[:, i], label=method, marker='o')
-    plt.plot(results[:, i], TOL, label=method, marker='o', color=col[i])
+    #plt.plot(results[:, i], TOL, label=method, marker='o', color=col[i])
 
     
     # Fit a linear model to the log-transformed data
@@ -359,11 +357,12 @@ for i, method in enumerate(methods):
     slopes[i] = slope
 
     # Plot the fitted line
-    plt.plot(log_step_size, (slope * log_step_size + intercept), linestyle='--', color=col[i])
+    #plt.plot(log_step_size, (slope * log_step_size + intercept), linestyle='--', color=col[i])
 
-print(slopes)
+#print(slopes)
 A9 = slopes
 
+"""
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel('Tolerance')
@@ -372,3 +371,64 @@ plt.title('Average Step Size vs Tolerance for Different Methods')
 plt.legend()
 plt.grid(True)
 plt.show()
+"""
+
+L = 4
+xspan = np.linspace(-L, L, int((2 * L) / 0.1) + 1)
+
+psi = np.zeros((len(xspan), 5))
+
+psi[:,0] = np.pi**(-1/4) * np.exp(-xspan**2 / 2)
+psi[:,1] = np.sqrt(2) * np.pi**(-1/4) * xspan * np.exp(-xspan**2 / 2)
+psi[:,2]= (np.sqrt(2) * np.pi**(1/4))**(-1) * (2 * xspan**2 - 1) * np.exp(-xspan**2 / 2)
+psi[:,3] = (np.sqrt(3) * np.pi**(1/4))**(-1) * (2 * xspan**3 - 3 * xspan) * np.exp(-xspan**2 / 2)
+psi[:,4] = (2 * np.sqrt(6) * np.pi**(1/4))**(-1) * (4 * xspan**4 - 12 * xspan**2 + 3) * np.exp(-xspan**2 / 2)
+
+A10 = np.zeros(5)
+A11 = np.zeros(5)
+A12 = np.zeros(5)
+A13 = np.zeros(5)
+
+#plt.figure()
+for i in range(5):
+    #psi[:,i] /= np.sqrt(np.trapz(psi[:,i]**2, xspan))
+    if psi[1,i]-psi[0,i] < 0:
+        psi[:,i] *= -1
+    errorA1 = A1[:,i]-abs(psi[:,i])
+    errorA2 = A2[i]-(2*i+1)
+    errorA3 = A3[:,i]-abs(psi[:,i])
+    errorA4 = A4[i]-(2*i+1)
+    #plt.plot(xspan, errorA3, label=f"Mode {i+1}", color=col[i % len(col)])
+    A10[i] = np.trapz(errorA1**2, xspan)
+    A11[i] = 100*abs(errorA2/(2*i+1))
+    A12[i] = np.trapz(errorA3**2, xspan)
+    A13[i] = 100*abs(errorA4/(2*i+1))
+
+"""
+print('A1= ' + str(A1))
+print('A2= ' + str(A2))
+print('A3= ' + str(A3))
+print('A4= ' + str(A4))
+print('A5= ' + str(A5))
+print('A6= ' + str(A6))
+print('A7= ' + str(A7))
+print('A8= ' + str(A8))
+print('A9= ' + str(A9))
+print('A10= ' + str(A10))
+print('A11= ' + str(A11))
+print('A12= ' + str(A12))
+print('A13= ' + str(A13))
+"""
+
+"""
+plt.xlabel('xspan')
+plt.ylabel('Difference (|psi| - A1)')
+plt.title('Difference between |psi| and A1 for Different Modes')
+plt.legend()
+plt.show()
+"""
+"""
+other_one = np.genfromtxt('AMATH 481\AMATH-481-HW-Code\A11.csv', delimiter=',')
+error = A11-other_one
+print('error = ' + str(error))
+"""    
