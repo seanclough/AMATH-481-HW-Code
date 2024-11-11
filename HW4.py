@@ -3,8 +3,12 @@ import matplotlib.pyplot as plt
 from scipy.sparse import spdiags
 import pandas as pd
 
-m = 5    # N value in x and y directions
+m = 8    # N value in x and y directions
 n = m * m  # total size of matrix
+xrange = 20
+yrange = 20
+dx = xrange / (m - 1)
+dy = yrange / (m - 1)
 
 e0 = np.zeros((n, 1))  # vector of zeros
 e1 = np.ones((n, 1))   # vector of ones
@@ -31,6 +35,7 @@ diagonals = [e1.flatten(), e1.flatten(), e5.flatten(),
 offsets = [-(n-m), -m, -m+1, -1, 0, 1, m-1, m, (n-m)]
 
 matA = spdiags(diagonals, offsets, n, n).toarray()
+matA = matA/(dx*dy) # assuming dx = dy
 A1 = matA
 
 # Convert to Pandas DataFrame for better formatting
@@ -52,6 +57,7 @@ e1 = np.ones((n, 1))
 diagonals = [e1.flatten(), -e1.flatten(), e1.flatten(), -e1.flatten()]
 offsets = [-(n-1), -1, 1, n-1]
 matB = spdiags(diagonals, offsets, n, n).toarray()
+matB = matB/(2*dx)
 df_matB = pd.DataFrame(matB)
 print("Matrix matB:")
 print(df_matB)
@@ -60,8 +66,9 @@ A2 = matB
 e1 = np.ones((n, 1))
 diagonals = [e1.flatten(), -e1.flatten(), e1.flatten(), -e1.flatten()]
 offsets = [-(n-m), -m, m, n-m]
-matB = spdiags(diagonals, offsets, n, n).toarray()
-df_matB = pd.DataFrame(matB)
-print("Matrix matB:")
-print(df_matB)
-A2 = matB
+matC = spdiags(diagonals, offsets, n, n).toarray()
+matC = matC/(2*dy)
+df_matC = pd.DataFrame(matC)
+print("Matrix matC:")
+print(df_matC)
+A2 = matC
