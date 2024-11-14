@@ -1,14 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.sparse import spdiags
-import pandas as pd
+#import pandas as pd
 
 m = 8    # N value in x and y directions
 n = m * m  # total size of matrix
 xrange = 20
 yrange = 20
-dx = xrange / (m - 1)
-dy = yrange / (m - 1)
+dx = xrange / m
+dy = yrange / m
 
 e0 = np.zeros((n, 1))  # vector of zeros
 e1 = np.ones((n, 1))   # vector of ones
@@ -39,7 +39,7 @@ matA = matA/(dx*dy) # assuming dx = dy
 A1 = matA
 
 # Convert to Pandas DataFrame for better formatting
-df_matA = pd.DataFrame(matA)
+#df_matA = pd.DataFrame(matA)
 
 # Print the matrix matA using Pandas
 #print("Matrix matA:")
@@ -54,21 +54,21 @@ plt.show()
 """
 
 e1 = np.ones((n, 1))
-diagonals = [e1.flatten(), -e1.flatten(), e1.flatten(), -e1.flatten()]
-offsets = [-(n-1), -1, 1, n-1]
+diagonals = [e5.flatten(), -e2.flatten(), e3.flatten(), -e4.flatten()]
+offsets = [-(m-1), -1, 1, m-1]
 matB = spdiags(diagonals, offsets, n, n).toarray()
 matB = matB/(2*dx)
-df_matB = pd.DataFrame(matB)
-print("Matrix matB:")
-print(df_matB)
-A2 = matB
+#df_matB = pd.DataFrame(matB)
+#print("Matrix matB:")
+#print(df_matB)
+A3 = matB
 
 e1 = np.ones((n, 1))
 diagonals = [e1.flatten(), -e1.flatten(), e1.flatten(), -e1.flatten()]
 offsets = [-(n-m), -m, m, n-m]
 matC = spdiags(diagonals, offsets, n, n).toarray()
 matC = matC/(2*dy)
-df_matC = pd.DataFrame(matC)
-print("Matrix matC:")
-print(df_matC)
+#df_matC = pd.DataFrame(matC)
+#print("Matrix matC:")
+#print(df_matC)
 A2 = matC
