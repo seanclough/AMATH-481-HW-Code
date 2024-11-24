@@ -19,7 +19,8 @@ y = np.linspace(-yrange/2, yrange/2, m+1)
 y = y[0:m]
 X, Y = np.meshgrid(x, y)
 w0 = fft2(np.exp(-X**2 - (1 / 20) * (Y**2)))
-w0 = np.hstack((w0.real.flatten(), w0.imag.flatten()))
+w0 = w0.reshape(n)
+w0 = np.hstack((np.real(w0), np.imag(w0)))
 
 kx = (2 * np.pi / xrange) * np.concatenate((np.arange(0, m/2), np.arange(-m/2, 0)))
 kx[0] = 1e-6
@@ -33,7 +34,8 @@ def rhs1(t,w_f_1d, m, n, K):
     w_f = w_f_1d.reshape((m, m))
     psi_f = -w_f/K
     w_t_f = 0.001*-1*K*w_f-fft2(ifft2(1j*KX*psi_f)*ifft2(1j*KY*w_f))+fft2(ifft2(1j*KY*psi_f)*ifft2(1j*KX*w_f))
-    w_t_f_1d = np.hstack((w_t_f.real.flatten(), w_t_f.imag.flatten()))
+    w_t_f_1d = w_t_f.reshape(n)
+    w_t_f_1d = np.hstack((np.real(w_t_f_1d), np.imag(w_t_f_1d)))
     return w_t_f_1d
 
 t_eval = np.arange(0, 4.1, 0.5)
@@ -46,4 +48,4 @@ A1 = A1.reshape((m, m))
 A1 = np.real(ifft2(A1))
 plt.figure()
 plt.contourf(X, Y, A1, 100, cmap='jet')
-#plt.show()
+plt.show()
