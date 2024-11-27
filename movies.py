@@ -5,7 +5,7 @@ from scipy.fftpack import fft2, ifft2
 from scipy.integrate import solve_ivp
 from matplotlib.animation import FuncAnimation
 
-m = 64    # N value in x and y directions
+m = 256    # N value in x and y directions
 n = m * m  # total size of matrix
 xrange = 20
 yrange = 20
@@ -16,7 +16,22 @@ x = x[0:m]
 y = np.linspace(-yrange/2, yrange/2, m+1)
 y = y[0:m]
 X, Y = np.meshgrid(x, y)
-w0=np.exp(-X**2 - (1 / 20) * (Y**2))
+#w0=np.exp(-X**2 - (1 / 20) * (Y**2))
+#peaks = 9
+#w0 = np.sin(2*peaks/xrange*np.pi*X)*np.sin(2*peaks/yrange*np.pi*Y)
+#box_size = [5,5]
+w0 = np.zeros((m, m))
+for i in range(len(x)):
+    for j in range(len(y)):
+        #if abs(x[i])<box_size[0] and abs(y[j])<box_size[1]:
+            #w0[i,j] = 1
+        #if y[j]>-np.sqrt(3)*5/3 and y[j]<-np.sqrt(3)*x[i]+np.sqrt(3)*5*2/3 and y[j]<np.sqrt(3)*x[i]+np.sqrt(3)*5*2/3:
+            #w0[i,j] = 1
+        if y[j]>-5 and y[j]<-np.sqrt(3)*x[i] and y[j]<np.sqrt(3)*x[i]:
+            w0[j,i]=1
+        if y[j]<5 and y[j]>-np.sqrt(3)*x[i] and y[j]>np.sqrt(3)*x[i]:
+            w0[j,i]=1
+
 w0_f_2d = fft2(w0)
 w0_f_1d = w0_f_2d.reshape(n)
 w0_f_1d = np.hstack((np.real(w0_f_1d), np.imag(w0_f_1d)))
@@ -37,8 +52,8 @@ def rhs1(t,w_f_1d, m, n, K):
     w_t_f_1d = np.hstack((np.real(w_t_f_1d), np.imag(w_t_f_1d)))
     return w_t_f_1d
 
-run_time = 60
-fps = 30
+run_time = 150 #seconds
+fps = 30 #frames per second
 t_eval = np.linspace(0, run_time, run_time*fps)
 #t_eval = np.arange(0, 4.1, 0.5)
 tspan = [0, run_time]
@@ -54,6 +69,7 @@ for i in range(len(t_eval)):
             result_1d_i[j] = 0
     result_2d_i = result_1d_i.reshape((m, m))
     result2.append(result_2d_i)
+result2[0] = w0
 #plt.figure()
 #plt.contourf(X, Y, result2[2], 100, cmap='jet')
 #plt.show()
@@ -74,7 +90,7 @@ def update(frame):
 ani = FuncAnimation(fig, update, frames=len(t_eval), blit=False)
 
 # Save the animation as a movie file (e.g., MP4)
-ani.save('AMATH 481\\AMATH-481-HW-Code\\anime.gif', writer='pillow', fps=fps)
+ani.save('AMATH 481\\AMATH-481-HW-Code\\anime_4_extended.gif', writer='pillow', fps=fps)
 
 # Display the animation
 #plt.show()
