@@ -50,6 +50,7 @@ K = KX**2 + KY**2
 # DEFINING RIGHT HAND SIDE OF PDE
 # takes in present state and returns time derivative of state
 # ω_t = 0.001*∇^2(ω) - ψ_x*ω_y + ψ_y*ω_x
+# ∇^2(ψ) = ω
 def rhs1(t,w_f_1d, m, n, K):
     w_f_1d = w_f_1d[0:n]+1j*w_f_1d[n:]
     w_f = w_f_1d.reshape((m, m))
